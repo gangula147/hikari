@@ -1,0 +1,56 @@
+package com.citi.gfs.tableau.config;
+import java.util.Properties;
+import javax.sql.DataSource;
+import org. springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org. springframework.context.annotation.Configuration;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDatasource:
+import lombok.extern.slf4j.s1f4j;
+@S1f4j
+@Configuration
+public class DatabaseConfig
+{
+@Value("${jdbc.jdbc_url}")
+protected String dburl;
+@Value("${jdbc. jdbc _username})
+protected String dbUserName;
+@Value("${jdbc.jdbc_driver}")
+protected String jdbcDriver;
+@Value("${jdbc.jdbc_password}")
+protected String dbSecret;
+@Value("$(jdbc-jdbc_gs_size}")
+protected String maxConnectionsize;
+
+
+@Bean
+protected DataSource primaryDataSource (@Value("${random.int}") int randomNum) throws Exception{
+log. info("Configuring primary database with connection pool
+");
+Properties dsProperties = new Properties () ;
+dsProperties.setProperty("url",
+dbUr1);
+dsProperties.setProperty("user"
+dbUserName);
+dsProperties.setProperty("password"
+"");
+//dsProperties. setProperty ("password", new SecretAgentClient ().getPassword (dbSecret)) ;
+Properties configProperties = new Properties () ;
+configProperties.setProperty("connectionTestQuery"
+"");
+configProperties.setProperty("driverClassName",jdbcDriver);
+configProperties.setProperty("jdbcUrl",dburl);
+configProperties.setProperty("maximumPoolSize",maxConnectionsize);
+HikariConfig hikariConfig = new HikariConfig (configProperties);
+hikariConfig.setDataSourceProperties(dsProperties);
+hikariConfig.setPoolName("configDbConnectionPool.
+"+
+randomNum);
+hikariConfig.setIdleTimeout(30000);
+//30 Sec This is optional
+hikariConfig.setConnectionTimeout(120000);
+//2 min This is optional;
+return new HikariDataSource(hikariConfig);
+
+}
+}
